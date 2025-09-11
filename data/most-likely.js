@@ -1,0 +1,13 @@
+// data/most-likely.js
+window.mostLikelyData = [
+  "become famous",
+  "go to jail",
+  "survive a zombie apocalypse",
+  "become a millionaire",
+  "forget their own birthday",
+  "trip over nothing",
+  "become a superhero",
+  "win an Olympic medal",
+  "become president",
+  "eat something weird"
+];

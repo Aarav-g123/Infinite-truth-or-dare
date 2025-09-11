@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truth or Dare - Ultimate Party Games</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/game-common.css">
+</head>
+<body>
+    <div class="container">
+        <div class="game-screen">
+            <div class="game-header">
+                <h2>Truth or Dare</h2>
+                <a href="../index.html" class="btn home-btn">Back to Games</a>
+            </div>
+            
+            <div class="category-selector">
+                <button class="category-btn active" data-category="all">All</button>
+                <button class="category-btn" data-category="truth">Truth</button>
+                <button class="category-btn" data-category="dare">Dare</button>
+            </div>
+            
+            <div class="game-content">
+                <p class="question" id="truth-dare-question">Loading game data...</p>
+                <div class="game-options">
+                    <button class="btn" id="truth-btn" disabled>Truth</button>
+                    <button class="btn" id="dare-btn" disabled>Dare</button>
+                    <button class="btn" id="next-btn" disabled>Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../scripts/game-manager.js"></script>
+    <script src="../scripts/truth-dare.js"></script>
+</body>
+</html>
