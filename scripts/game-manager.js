@@ -1,27 +1,17 @@
-// Utility functions for game management
+// scripts/game-manager.js
 class GameManager {
-    static loadGameData(gameName) {
-        return new Promise((resolve, reject) => {
-            // Check if the data is already loaded in window object
-            const data = window[`${gameName.replace('-', '')}Data`];
-            if (data) {
-                resolve(data);
-            } else {
-                // If not loaded, create a script element to load it
-                const script = document.createElement('script');
-                script.src = `../data/${gameName}.js`;
-                script.onload = () => {
-                    const loadedData = window[`${gameName.replace('-', '')}Data`];
-                    if (loadedData) {
-                        resolve(loadedData);
-                    } else {
-                        reject(new Error(`Failed to load ${gameName} data`));
-                    }
-                };
-                script.onerror = () => reject(new Error(`Failed to load ${gameName} data script`));
-                document.head.appendChild(script);
+    static async loadGameData(gameName) {
+        try {
+            const response = await fetch(`../data/${gameName}.json`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-        });
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error loading game data:', error);
+            throw new Error(`Could not load data for ${gameName}`);
+        }
     }
 
     static getRandomItem(array) {

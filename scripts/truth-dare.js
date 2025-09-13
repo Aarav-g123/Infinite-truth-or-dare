@@ -1,5 +1,5 @@
 // scripts/truth-dare.js
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     const questionElement = document.getElementById('truth-dare-question');
     const truthBtn = document.getElementById('truth-btn');
     const dareBtn = document.getElementById('dare-btn');
@@ -9,30 +9,33 @@ document.addEventListener('DOMContentLoaded', function() {
     let gameData = null;
     let currentCategory = 'all';
 
-    // Load game data
-    GameManager.loadGameData('truth-dare')
-        .then(data => {
-            gameData = data;
-            console.log('Truth or Dare data loaded successfully');
-            questionElement.textContent = "Choose Truth or Dare to start playing!";
-            truthBtn.disabled = false;
-            dareBtn.disabled = false;
-            nextBtn.disabled = false;
-        })
-        .catch(error => {
-            console.error('Error loading game data:', error);
-            questionElement.textContent = 'Failed to load game data. Please try again later.';
-        });
+    // Set initial button states
+    truthBtn.disabled = true;
+    dareBtn.disabled = true;
+    nextBtn.disabled = true;
+    questionElement.textContent = "Loading game data...";
+
+    try {
+        // Load game data
+        gameData = await GameManager.loadGameData('truth-dare');
+        console.log('Truth or Dare data loaded successfully');
+        questionElement.textContent = "Choose Truth or Dare to start playing!";
+        truthBtn.disabled = false;
+        dareBtn.disabled = false;
+        nextBtn.disabled = false;
+    } catch (error) {
+        console.error('Error loading game data:', error);
+        questionElement.textContent = 'Failed to load game data. Please refresh and try again.';
+        return;
+    }
 
     // Event listeners
     truthBtn.addEventListener('click', () => {
-        if (!gameData) return;
         const randomTruth = GameManager.getRandomItem(gameData.truth);
         questionElement.textContent = randomTruth;
     });
 
     dareBtn.addEventListener('click', () => {
-        if (!gameData) return;
         const randomDare = GameManager.getRandomItem(gameData.dare);
         questionElement.textContent = randomDare;
     });

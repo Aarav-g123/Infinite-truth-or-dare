@@ -1,5 +1,4 @@
-// data/truth-dare.js
-window.truthDareData = {
+{
   "truth": [
     "What's the most embarrassing thing you've ever done in front of a crush?",
     "What's the weirdest dream you've ever had?",
@@ -24,4 +23,4 @@ window.truthDareData = {
     "Do 20 pushups right now",
     "Let the group give you a new hairstyle"
   ]
-};
+}
