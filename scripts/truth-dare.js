@@ -14,28 +14,60 @@ document.addEventListener('DOMContentLoaded', async function() {
     dareBtn.disabled = true;
     nextBtn.disabled = true;
     questionElement.textContent = "Loading game data...";
+    questionElement.classList.remove('error');
+    questionElement.classList.add('loading');
 
     try {
         // Load game data
         gameData = await GameManager.loadGameData('truth-dare');
-        console.log('Truth or Dare data loaded successfully');
+        console.log('Truth or Dare data loaded successfully:', gameData);
+        
+        if (!gameData || (!gameData.truth && !gameData.dare)) {
+            throw new Error('Loaded data is invalid or empty');
+        }
+        
         questionElement.textContent = "Choose Truth or Dare to start playing!";
+        questionElement.classList.remove('loading');
+        questionElement.classList.remove('error');
         truthBtn.disabled = false;
         dareBtn.disabled = false;
         nextBtn.disabled = false;
     } catch (error) {
         console.error('Error loading game data:', error);
-        questionElement.textContent = 'Failed to load game data. Please refresh and try again.';
+        questionElement.textContent = 'Error: Failed to load game data. Please check console for details.';
+        questionElement.classList.remove('loading');
+        questionElement.classList.add('error');
+        
+        // Add retry button dynamically
+        if (!document.getElementById('retry-btn')) {
+            const retryBtn = document.createElement('button');
+            retryBtn.id = 'retry-btn';
+            retryBtn.className = 'btn';
+            retryBtn.textContent = 'Retry Loading';
+            retryBtn.addEventListener('click', () => {
+                window.location.reload();
+            });
+            questionElement.parentNode.insertBefore(retryBtn, questionElement.nextSibling);
+        }
+        
         return;
     }
 
     // Event listeners
     truthBtn.addEventListener('click', () => {
+        if (!gameData || !gameData.truth || gameData.truth.length === 0) {
+            questionElement.textContent = "Truth data not available";
+            return;
+        }
         const randomTruth = GameManager.getRandomItem(gameData.truth);
         questionElement.textContent = randomTruth;
     });
 
     dareBtn.addEventListener('click', () => {
+        if (!gameData || !gameData.dare || gameData.dare.length === 0) {
+            questionElement.textContent = "Dare data not available";
+            return;
+        }
         const randomDare = GameManager.getRandomItem(gameData.dare);
         questionElement.textContent = randomDare;
     });
