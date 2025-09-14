@@ -32,106 +32,58 @@ git clone https://github.com/Aarav-g123/Infinite-truth-or-dare.git
 cd Infinite-truth-or-dare
 ```
 
-2. Run the app (entry point: `index.html`)
+2. Run the app 
 
-* Open `index.html` in your browser directly (double-click) — this works for purely static features.
+### Option 1: Direct File Access (Limited Functionality)
+
+Open `index.html` in your browser directly (double-click) --- this works
+for purely static features but data loading may not work properly due to
+browser security restrictions.
+
+------------------------------------------------------------------------
+
+### Option 2: Local Server (Recommended for Full Functionality)
+
+1.  Open your terminal or command prompt\
+
+2.  Navigate to the project directory:
+
+    ``` bash
+    cd party-games-website
+    ```
+
+3.  Run the Python HTTP server:
+
+    ``` bash
+    python -m http.server 8000
+    ```
+
+4.  Open your browser and go to:\
+    <http://localhost:8000>
+
+Using the local server ensures all features work correctly, including
+data loading from JSON files.
+
 
 ---
 
-# Data format (questions.json)
+# Data format (put-finger-down.json)
 
 Keep question objects small and extensible. Example schema (JSON):
 
 ```json
 [
-  {
-    "id": "truth-0001",
-    "game": "truth",
-    "text": "What's the most embarrassing thing that's ever happened to you?",
-    "tags": ["embarrassing", "personal"],
-    "age_rating": 13,
-    "intensity": 3,
-    "language": "en",
-    "created_by": "seed",
-    "created_at": "2025-09-01T12:00:00Z",
-    "score": 4.7,
-    "flags": []
-  }
+  "Put a finger down if you've ever pretended to be sick to get out of something",
+  "Put a finger down if you've ever cried during a cartoon movie",
+  "Put a finger down if you've ever sung in the shower",
+  "Put a finger down if you've ever danced when no one was watching",
+  "Put a finger down if you've ever fallen in public and played it off",
+  "Put a finger down if you've ever had a crush on a teacher",
+  "Put a finger down if you've ever stolen something from a store",
+  "Put a finger down if you've ever lied about your age",
+  "Put a finger down if you've ever had a dream about a celebrity",
+  "Put a finger down if you've ever been scared of a children's movie"
 ]
 ```
 
-Field notes:
-
-* `id`: unique string (prefix by game type for convenience).
-* `game`: string: truth, dare, pfd (put-finger-down), likely, never, etc.
-* `tags`: used for filtering and theming.
-* `age_rating`: integer, minimum appropriate age (e.g., 13, 16, 18).
-* `intensity`: 1-5 scale (1 = chill, 5 = extreme).
-* `score`: aggregate rating (user feedback).
-
----
-
-# Sample questions (seed)
-
-```json
-[
-  {"id":"truth-0001","game":"truth","text":"What's the most embarrassing thing you've done for attention?","tags":["embarrassing"],"age_rating":16,"intensity":3},
-  {"id":"dare-0001","game":"dare","text":"Sing the chorus of your favorite song out loud for 30 seconds.","tags":["music","fun"],"age_rating":0,"intensity":1},
-  {"id":"pfd-0001","game":"pfd","text":"Put a finger down if you've ever gone on a date from a dating app.","tags":["dating","modern"],"age_rating":18,"intensity":1}
-]
-```
-
----
-
-# AI integration — prompt templates & examples
-
-Below are example prompt templates to send to an LLM. Tailor temperature, max tokens, and safety settings in your API call.
-
-## 1) Generate N questions for a game and theme
-
-```
-PROMPT: "You are a friendly party-game writer. Produce {N} {game} questions tagged with theme: {theme}. For each item return JSON objects with fields: id, game, text, tags, age_rating (number), intensity (1-5). Keep each text under 140 characters and avoid explicit sexual content unless age_rating >= 18. Output must be valid JSON array only."
-```
-
-### Example call data (pseudo):
-
-```json
-{ "N": 10, "game": "truth", "theme": "college nights" }
-```
-
-## 2) Re-write / sanitize a question
-
-```
-PROMPT: "Rewrite the following question to be friendlier and non-offensive, preserving meaning: \"{question}\". Output single JSON: { \"text\": \"...\", \"suggested_age_rating\": number }"
-```
-
-## 3) Rate / classify questions (good vs. bad)
-
-```
-PROMPT: "Given the following list of questions, mark each as 'good' or 'bad' and provide a short reason (max 15 words). A 'bad' question is offensive, too sexual for its rating, or unclear."
-```
-
-**Important:** Use model output only as a *suggestion*. Always run automated filters (profanity, PII removal) and optionally a human review step before publishing.
-
----
-
-# Example server API (optional)
-
-Small express-style endpoints to support the UI:
-
-```js
-// GET /api/games
-// returns list of available games
-app.get('/api/games', (req, res) => {
-  res.json(["truth", "dare", "pfd", "likely", "never"])
-})
-```
-
----
-
-# Safety & moderation notes
-
-* Always run profanity/toxicity checks on AI-generated content.
-* Strip or redact PII (names, phone numbers, emails) before publishing.
-* Provide an "adult content" toggle and honor region-based age limits.
 
