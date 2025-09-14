@@ -1,5 +1,4 @@
-// data/most-likely.js
-window.mostLikelyData = [
+[
   "become famous",
   "go to jail",
   "survive a zombie apocalypse",
@@ -10,4 +9,4 @@ window.mostLikelyData = [
   "win an Olympic medal",
   "become president",
   "eat something weird"
-];
+]

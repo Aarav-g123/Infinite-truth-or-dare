@@ -1,5 +1,5 @@
 // scripts/most-likely.js
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     const playerNameInput = document.getElementById('player-name');
     const addPlayerBtn = document.getElementById('add-player-btn');
     const playersList = document.getElementById('players-list');
@@ -13,19 +13,37 @@ document.addEventListener('DOMContentLoaded', function() {
     let gameData = null;
     let players = [];
 
-    // Load game data
-    GameManager.loadGameData('most-likely')
-        .then(data => {
-            gameData = data;
-            console.log('Most Likely To data loaded successfully');
-            nextBtn.disabled = false;
-        })
-        .catch(error => {
-            console.error('Error loading game data:', error);
-            questionElement.textContent = 'Failed to load game data. Please try again later.';
-        });
+    nextBtn.disabled = true;
+    startGameBtn.style.display = 'none';
 
-    // Event listeners
+    try {
+        gameData = await GameManager.loadGameData('most-likely');
+        console.log('Most Likely To data loaded successfully:', gameData);
+        
+        if (!gameData || gameData.length === 0) {
+            throw new Error('Loaded data is invalid or empty');
+        }
+        
+        nextBtn.disabled = false;
+    } catch (error) {
+        console.error('Error loading game data:', error);
+        questionElement.textContent = 'Failed to load game data. Please try again later.';
+        questionElement.classList.add('error');
+        
+
+        if (!document.getElementById('retry-btn')) {
+            const retryBtn = document.createElement('button');
+            retryBtn.id = 'retry-btn';
+            retryBtn.className = 'btn';
+            retryBtn.textContent = 'Retry Loading';
+            retryBtn.addEventListener('click', () => {
+                window.location.reload();
+            });
+            questionElement.parentNode.insertBefore(retryBtn, questionElement.nextSibling);
+        }
+    }
+
+
     addPlayerBtn.addEventListener('click', () => {
         const name = playerNameInput.value.trim();
         if (name) {
@@ -48,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     nextBtn.addEventListener('click', showQuestion);
 
-    // Functions
+
     function updatePlayersList() {
         playersList.innerHTML = '';
         players.forEach((player, index) => {
@@ -56,9 +74,17 @@ document.addEventListener('DOMContentLoaded', function() {
             playerItem.className = 'player-item';
             playerItem.innerHTML = `
                 <span>${player}</span>
-                <button class="btn" onclick="removePlayer(${index})">Remove</button>
+                <button class="btn remove-btn" data-index="${index}">Remove</button>
             `;
             playersList.appendChild(playerItem);
+        });
+        
+
+        document.querySelectorAll('.remove-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const index = parseInt(e.target.getAttribute('data-index'));
+                removePlayer(index);
+            });
         });
     }
 
@@ -74,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
             votingPlayers.appendChild(playerItem);
         });
         
-        // Add event listeners to vote buttons
+
         document.querySelectorAll('.vote-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const playerName = e.target.getAttribute('data-player');
@@ -84,18 +110,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function showQuestion() {
-        if (!gameData) return;
+        if (!gameData || gameData.length === 0) {
+            questionElement.textContent = "No questions available";
+            return;
+        }
         const randomQuestion = GameManager.getRandomItem(gameData);
         questionElement.textContent = `Who is most likely to ${randomQuestion}?`;
     }
 
-    // Global function for player removal
-    window.removePlayer = function(index) {
+    function removePlayer(index) {
         players.splice(index, 1);
         updatePlayersList();
         
         if (players.length < 2) {
             startGameBtn.style.display = 'none';
         }
-    };
+    }
 });

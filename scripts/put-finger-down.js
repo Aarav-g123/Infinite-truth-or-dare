@@ -1,5 +1,5 @@
 // scripts/put-finger-down.js
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     const statementElement = document.getElementById('statement');
     const putFingerBtn = document.getElementById('put-finger-btn');
     const nextBtn = document.getElementById('next-btn');
@@ -9,24 +9,52 @@ document.addEventListener('DOMContentLoaded', function() {
     let gameData = null;
     let fingersDown = 0;
 
-    // Load game data
-    GameManager.loadGameData('put-finger-down')
-        .then(data => {
-            gameData = data;
-            console.log('Put a Finger Down data loaded successfully');
-            statementElement.textContent = "Click next to get your first statement!";
-            nextBtn.disabled = false;
-            putFingerBtn.disabled = false;
-            resetBtn.disabled = false;
-        })
-        .catch(error => {
-            console.error('Error loading game data:', error);
-            statementElement.textContent = 'Failed to load game data. Please try again later.';
-        });
+    putFingerBtn.disabled = true;
+    nextBtn.disabled = true;
+    resetBtn.disabled = true;
+    statementElement.textContent = "Loading game data...";
+    statementElement.classList.remove('error');
+    statementElement.classList.add('loading');
 
-    // Event listeners
+    try {
+        gameData = await GameManager.loadGameData('put-finger-down');
+        console.log('Put a Finger Down data loaded successfully:', gameData);
+        
+        if (!gameData || gameData.length === 0) {
+            throw new Error('Loaded data is invalid or empty');
+        }
+        
+        statementElement.textContent = "Click next to get your first statement!";
+        statementElement.classList.remove('loading');
+        statementElement.classList.remove('error');
+        nextBtn.disabled = false;
+        putFingerBtn.disabled = false;
+        resetBtn.disabled = false;
+    } catch (error) {
+        console.error('Error loading game data:', error);
+        statementElement.textContent = 'Failed to load game data. Please try again later.';
+        statementElement.classList.remove('loading');
+        statementElement.classList.add('error');
+        
+
+        if (!document.getElementById('retry-btn')) {
+            const retryBtn = document.createElement('button');
+            retryBtn.id = 'retry-btn';
+            retryBtn.className = 'btn';
+            retryBtn.textContent = 'Retry Loading';
+            retryBtn.addEventListener('click', () => {
+                window.location.reload();
+            });
+            statementElement.parentNode.insertBefore(retryBtn, statementElement.nextSibling);
+        }
+    }
+
+
     nextBtn.addEventListener('click', () => {
-        if (!gameData) return;
+        if (!gameData || gameData.length === 0) {
+            statementElement.textContent = "No statements available";
+            return;
+        }
         const randomStatement = GameManager.getRandomItem(gameData);
         statementElement.textContent = randomStatement;
     });

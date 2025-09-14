@@ -1,12 +1,28 @@
 // scripts/game-manager.js
 class GameManager {
+    static getBasePath() {
+        // Check if we're running on a server or locally
+        if (window.location.protocol === 'file:') {
+            // File protocol - running locally
+            const path = window.location.pathname;
+            const segments = path.split('/');
+            // Remove the filename
+            segments.pop();
+            return segments.join('/');
+        } else {
+            // HTTP protocol - running on a server
+            return window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '');
+        }
+    }
+
     static async loadGameData(gameName) {
         try {
-            // Use absolute path to avoid relative path issues
-            const basePath = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
-            const dataPath = `${basePath}/data/${gameName}.json`;
+            // Use relative path to avoid issues with different environments
+            const basePath = this.getBasePath();
+            const dataPath = `data/${gameName}.json`;
+            const fullPath = `${basePath}/${dataPath}`;
             
-            console.log(`Loading game data from: ${dataPath}`);
+            console.log(`Loading game data from: ${fullPath}`);
             
             const response = await fetch(dataPath, {
                 headers: {
