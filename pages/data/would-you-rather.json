@@ -1,0 +1,44 @@
+{
+  "questions": [
+    {
+      "optionA": "never use the internet again",
+      "optionB": "never use a phone again"
+    },
+    {
+      "optionA": "be able to talk to animals",
+      "optionB": "be able to speak all foreign languages"
+    },
+    {
+      "optionA": "have unlimited free time but no money",
+      "optionB": "have unlimited money but no free time"
+    },
+    {
+      "optionA": "always have to say everything on your mind",
+      "optionB": "never be able to speak again"
+    },
+    {
+      "optionA": "be famous but unhappy",
+      "optionB": "be unknown but happy"
+    },
+    {
+      "optionA": "lose all your memories from the past",
+      "optionB": "never be able to make new memories"
+    },
+    {
+      "optionA": "be unable to have children",
+      "optionB": "only be able to have triplets"
+    },
+    {
+      "optionA": "be alone for the rest of your life",
+      "optionB": "always be surrounded by annoying people"
+    },
+    {
+      "optionA": "never eat pizza again",
+      "optionB": "never eat chocolate again"
+    },
+    {
+      "optionA": "have a rewind button for your life",
+      "optionB": "have a pause button for your life"
+    }
+  ]
+}
