@@ -13,6 +13,7 @@
             <div class="game-header">
                 <h2>Truth or Dare</h2>
                 <a href="../index.html" class="btn home-btn">Back to Games</a>
+                <div id="status-indicator" class="status-indicator">Ready</div>
             </div>
             
             <div class="category-selector">
@@ -23,6 +24,24 @@
             
             <div class="game-content">
                 <p class="question" id="truth-dare-question">Loading game data...</p>
+                
+                <div class="rating-container" id="rating-container" style="display: none;">
+                    <p>Rate this question (0-10):</p>
+                    <div class="rating-buttons">
+                        <button class="rating-btn" data-rating="0">0</button>
+                        <button class="rating-btn" data-rating="1">1</button>
+                        <button class="rating-btn" data-rating="2">2</button>
+                        <button class="rating-btn" data-rating="3">3</button>
+                        <button class="rating-btn" data-rating="4">4</button>
+                        <button class="rating-btn" data-rating="5">5</button>
+                        <button class="rating-btn" data-rating="6">6</button>
+                        <button class="rating-btn" data-rating="7">7</button>
+                        <button class="rating-btn" data-rating="8">8</button>
+                        <button class="rating-btn" data-rating="9">9</button>
+                        <button class="rating-btn" data-rating="10">10</button>
+                    </div>
+                </div>
+                
                 <div class="game-options">
                     <button class="btn" id="truth-btn" disabled>Truth</button>
                     <button class="btn" id="dare-btn" disabled>Dare</button>
@@ -32,6 +51,7 @@
         </div>
     </div>
 
+    <script src="../scripts/ai-service.js"></script>
     <script src="../scripts/game-manager.js"></script>
     <script src="../scripts/truth-dare.js"></script>
 </body>

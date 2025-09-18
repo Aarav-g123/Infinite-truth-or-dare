@@ -1,28 +1,20 @@
-// scripts/game-manager.js
 class GameManager {
     static getBasePath() {
-        // Check if we're running on a server or locally
         if (window.location.protocol === 'file:') {
-            // File protocol - running locally
             const path = window.location.pathname;
             const segments = path.split('/');
-            // Remove the filename
             segments.pop();
             return segments.join('/');
         } else {
-            // HTTP protocol - running on a server
             return window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '');
         }
     }
 
     static async loadGameData(gameName) {
         try {
-            // Use relative path to avoid issues with different environments
             const basePath = this.getBasePath();
             const dataPath = `data/${gameName}.json`;
             const fullPath = `${basePath}/${dataPath}`;
-            
-            console.log(`Loading game data from: ${fullPath}`);
             
             const response = await fetch(dataPath, {
                 headers: {
@@ -67,6 +59,38 @@ class GameManager {
         } catch (error) {
             console.error('Error loading from localStorage:', error);
             return null;
+        }
+    }
+
+    static async generateAIQuestion(type, context = "") {
+        try {
+            const response = await fetch('/api/generate-question', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ type, context })
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to generate AI question');
+            }
+            
+            return await response.json();
+        } catch (error) {
+            console.error('Error generating AI question:', error);
+            return null;
+        }
+    }
+
+    static getQuestionsByRating(type, minRating = 7) {
+        try {
+            const aiQuestions = this.loadFromLocalStorage('ai_questions') || { truth: [], dare: [] };
+            const ratedQuestions = aiQuestions[type].filter(q => q.rating >= minRating);
+            return ratedQuestions;
+        } catch (error) {
+            console.error('Error getting questions by rating:', error);
+            return [];
         }
     }
 }

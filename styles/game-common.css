@@ -208,3 +208,164 @@ input {
     transform: scale(1.02);
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
+
+.rating-container {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.rating-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.rating-btn {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #4CAF50;
+    background-color: white;
+    color: #4CAF50;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.rating-btn:hover {
+    background-color: #4CAF50;
+    color: white;
+    transform: scale(1.1);
+}
+
+.rating-btn[data-rating="7"],
+.rating-btn[data-rating="8"],
+.rating-btn[data-rating="9"],
+.rating-btn[data-rating="10"] {
+    border-color: #4CAF50;
+    color: #4CAF50;
+}
+
+.rating-btn[data-rating="4"],
+.rating-btn[data-rating="5"],
+.rating-btn[data-rating="6"] {
+    border-color: #FFC107;
+    color: #FFC107;
+}
+
+.rating-btn[data-rating="1"],
+.rating-btn[data-rating="2"],
+.rating-btn[data-rating="3"] {
+    border-color: #F44336;
+    color: #F44336;
+}
+
+.question::after {
+    content: " (AI Generated)";
+    font-size: 0.8em;
+    color: #666;
+    display: none;
+}
+
+.question.ai-generated::after {
+    display: inline;
+}
+
+.loading {
+    color: #666;
+    font-style: italic;
+}
+
+.error {
+    color: #F44336;
+    font-weight: bold;
+}
+.status-indicator {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    background-color: #f0f0f0;
+    border-radius: 15px;
+    font-size: 12px;
+    color: #666;
+}
+
+.question.ai-generated {
+    color: #4CAF50;
+    border-left: 4px solid #4CAF50;
+    padding-left: 10px;
+}
+
+.rating-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.rating-btn {
+    width: 35px;
+    height: 35px;
+    border: 2px solid #ccc;
+    background-color: white;
+    color: #333;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.rating-btn:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.1);
+}
+
+.rating-btn[data-rating="7"],
+.rating-btn[data-rating="8"],
+.rating-btn[data-rating="9"],
+.rating-btn[data-rating="10"] {
+    border-color: #4CAF50;
+    color: #4CAF50;
+}
+
+.rating-btn[data-rating="7"]:hover,
+.rating-btn[data-rating="8"]:hover,
+.rating-btn[data-rating="9"]:hover,
+.rating-btn[data-rating="10"]:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.rating-btn[data-rating="4"],
+.rating-btn[data-rating="5"],
+.rating-btn[data-rating="6"] {
+    border-color: #FFC107;
+    color: #FFC107;
+}
+
+.rating-btn[data-rating="4"]:hover,
+.rating-btn[data-rating="5"]:hover,
+.rating-btn[data-rating="6"]:hover {
+    background-color: #FFC107;
+    color: white;
+}
+
+.rating-btn[data-rating="0"],
+.rating-btn[data-rating="1"],
+.rating-btn[data-rating="2"],
+.rating-btn[data-rating="3"] {
+    border-color: #F44336;
+    color: #F44336;
+}
+
+.rating-btn[data-rating="0"]:hover,
+.rating-btn[data-rating="1"]:hover,
+.rating-btn[data-rating="2"]:hover,
+.rating-btn[data-rating="3"]:hover {
+    background-color: #F44336;
+    color: white;
+}

@@ -1,89 +1,89 @@
-# Infinite Truth-or-Dare
+# Infinite Truth-or-Dare - Setup Instructions
 
-
-## Project overview
-
-This project provides a static framework and data model for party-style games plus (eventually) an extensible system for *customizing* and *generating* new questions using LLMs. It’s inspired by boring, repetitive question lists on many sites — we want questions that feel fresh, contextual, and safe.
-
-Key ideas:
-
-* Collection of curated questions for several party mini-games (truth or dare, put-a-finger-down, who’s most likely, etc.).
-* Allowing users to **prompt an AI** to generate new question sets or variants.
-* Letting users to **rate** or **flag** questions (good / bad), plus moderation filters.
-* Exportable, seedable JSON format so the app can remain static while supporting local generation.
+## Prerequisites
+1. **Node.js** (v14 or higher)  
+2. **An OpenAI API key**
 
 ---
 
-# Features
+## Installation Steps
 
-* Multiple game types (Truth or Dare, Put a Finger Down, Who's Most Likely, Never Have I Ever, Custom).
-* Tagging and filtering (age-appropriateness, theme, intensity, relationship-level).
-* AI generation: prompt templates to produce new, on-theme questions.
-* Community feedback: thumbs up / thumbs down, duplicate detection and quality score.
-* Safety pipeline: profanity & toxicity checks, adult-content toggle, length limits.
-* Static-first: all functionality works with a local JSON file and a static site.
-
----
-
-1. Clone the repo
-
+### 1. Clone the repository:
 ```bash
 git clone https://github.com/Aarav-g123/Infinite-truth-or-dare.git
 cd Infinite-truth-or-dare
 ```
 
-2. Run the app 
+### 2. Install dependencies:
+```bash
+npm install
+```
 
-### Option 1: Direct File Access (Limited Functionality)
+### 3. Set up environment variables:
+- Copy the `.env.example` file to `.env`  
+- Add your OpenAI API key to the `.env` file:
+```env
+OPENAI_API_KEY=your_openai_api_key_here
+```
 
-Open `index.html` in your browser directly (double-click) --- this works
-for purely static features but data loading may not work properly due to
-browser security restrictions.
+### 4. Run the application:
 
-------------------------------------------------------------------------
+#### Option 1: Direct File Access *(Limited Functionality)*
+Open `index.html` directly in your browser.  
+⚠️ Some features may not work due to browser security restrictions.  
 
-### Option 2: Local Server (Recommended for Full Functionality)
+#### Option 2: Local Server *(Recommended)*
+Run a local server using one of these methods:
 
-1.  Open your terminal or command prompt\
+**Using Python:**
+```bash
+python -m http.server 8000
+```
 
-2.  Navigate to the project directory:
+**Using Node.js:**
+```bash
+npx http-server
+```
 
-    ``` bash
-    cd party-games-website
-    ```
+**Using PHP:**
+```bash
+php -S localhost:8000
+```
 
-3.  Run the Python HTTP server:
-
-    ``` bash
-    python -m http.server 8000
-    ```
-
-4.  Open your browser and go to:\
-    <http://localhost:8000>
-
-Using the local server ensures all features work correctly, including
-data loading from JSON files.
-
+Then open your browser and navigate to:  
+👉 [http://localhost:8000](http://localhost:8000)
 
 ---
 
-# Data format (put-finger-down.json)
+## AI Features Setup
+The AI functionality requires:
+1. A valid **OpenAI API key** in your `.env` file  
+2. Running the application through a **local server** (not direct file access)  
+3. **Internet connection** for API calls  
 
-Keep question objects small and extensible. Example schema (JSON):
+---
+
+## Troubleshooting
+1. If buttons aren’t working, check the **browser console** for error messages  
+2. Ensure your **OpenAI API key** is valid and has available credits  
+3. Make sure you’re running the application through a **local server**, not directly opening HTML files  
+
+---
+
+## Data Format
+Questions are stored in JSON files in the `data/` directory with the following structure:
 
 ```json
-[
-  "Put a finger down if you've ever pretended to be sick to get out of something",
-  "Put a finger down if you've ever cried during a cartoon movie",
-  "Put a finger down if you've ever sung in the shower",
-  "Put a finger down if you've ever danced when no one was watching",
-  "Put a finger down if you've ever fallen in public and played it off",
-  "Put a finger down if you've ever had a crush on a teacher",
-  "Put a finger down if you've ever stolen something from a store",
-  "Put a finger down if you've ever lied about your age",
-  "Put a finger down if you've ever had a dream about a celebrity",
-  "Put a finger down if you've ever been scared of a children's movie"
-]
+{
+  "truth": [
+    "Question 1",
+    "Question 2"
+  ],
+  "dare": [
+    "Dare 1",
+    "Dare 2"
+  ]
+}
 ```
 
-
+AI-generated questions are saved to **localStorage** and persist between sessions.
